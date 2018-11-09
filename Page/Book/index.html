@@ -1,0 +1,67 @@
+<div id="Book" class="height-full overflow-auto bg-dark radius-small padding">
+    <el-row :gutter="10">
+        <el-col :span="24-setWidth">
+            <el-card class="border-none">
+                <div slot="header">
+                    <span><i class="icon-list"></i> 家谱信息列表</span>
+                    <el-button class="float-right margin-right" icon="icon-add-fill" size="mini" type="success" @click="reset();setWidth=8;"> 新增</el-button>
+                </div>
+                <el-table :stripe="true" :data="bookData" class="width-full">
+                    <el-table-column prop="id" label="编 号" width="60">
+                    </el-table-column>
+                    <el-table-column prop="name" label="家谱名称">
+                    </el-table-column>
+                    <el-table-column label="封面图片">
+                        <template slot-scope="scope">
+                            <img :src="scope.row.image" class="width-half"/>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="time" label="创建时间">
+                    </el-table-column>
+                    <el-table-column label="操作" width="190">
+                        <template slot-scope="scope">
+                            <el-button icon="icon-edit" size="mini" type="primary" @click="get(scope.row)"> 编辑</el-button>
+                            <el-button icon="icon-delete" size="mini" type="danger" @click="del(scope.row)"> 删除</el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </el-card>
+        </el-col>
+        <el-col :span="setWidth">
+            <el-card class="border-none">
+                <div slot="header">
+                    <span><i class="icon-book"></i> 家谱信息管理</span>
+                </div>
+                <el-form :model="bookForm" :rules="rules" ref="bookForm">
+                    <el-form-item prop="name">
+                        <el-input type="text" class="border-none" placeholder="请输入家谱名称" prefix-icon="icon-user" v-model="bookForm.name"></el-input>
+                    </el-form-item>
+                    <el-form-item prop="image">
+                        <el-input type="text" readonly class="border-none" placeholder="请上传封面图片" prefix-icon="icon-image" v-model="bookForm.image">
+                            <div slot="append">
+                                    <el-upload 
+                                    name="bookImage"
+                                    action="/Server/?module=Book&action=upload"
+                                    :show-file-list="false"
+                                    :on-change="uploading"
+                                    >
+                                    <el-button icon="icon-image"> 封面</el-button>
+                                  </el-upload>
+                            </div>
+                            
+                        </el-input>                        
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button class="margin-top-medium margin-bottom-medium" icon="icon-remove" type="warning"
+                            @click="reset"> 取消操作</el-button>
+                        <el-button v-if="!isupdate" class="margin-top-medium margin-bottom-medium" icon="icon-submit"
+                            type="primary" @click="add"> 添加家谱</el-button>
+                        <el-button v-else class="margin-top-medium margin-bottom-medium" icon="icon-submit" type="primary"
+                            @click="set"> 修改家谱</el-button>
+                    </el-form-item>
+                </el-form>
+            </el-card>
+        </el-col>
+    </el-row>
+
+</div>

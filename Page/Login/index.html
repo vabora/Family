@@ -1,0 +1,28 @@
+<div id="Login" class="screen-full">
+    <div class="position-fixed screen-fill bg-bing-blur"></div>
+    <el-row class="screen-fill" type="flex" justify="center" align="middle">
+        <el-col :xs="20" :sm="10" :md="8" :lg="7" :xl="5">
+            <el-card shadow="always" class="text-center border-none padding-medium fadein-top">
+                <img class="bg-darkblue padding width-half box-shadow radius-circle" :src="userLogo" />
+                <h3 class="margin-medium font-medium color-dark">思亲堂家谱系统 V2.0</h3>
+                <el-form :model="loginForm" :rules="rules" ref="loginForm">
+                    <el-form-item prop="uid">
+                        <el-input type="text" class="border-none" placeholder="请输入用户名" prefix-icon="icon-user" v-model="loginForm.uid"></el-input>
+                    </el-form-item>
+                    <el-form-item prop="pwd">
+                        <el-input type="password" class="border-none" placeholder="请输入密码" prefix-icon="icon-lock" v-model="loginForm.pwd"></el-input>
+                    </el-form-item>
+                    <el-form-item prop="code">
+                        <el-input type="text" class="border-none" placeholder="请输入验证码" prefix-icon="icon-code" v-model="loginForm.code" @keyup.enter.native="login">
+                        <img class="text-middle cursor-hand" slot="append" :src="verifyCode" @click="refreshCode" />
+                        </el-input>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button class="width-full margin-top-medium margin-bottom-medium" icon="icon-submit" type="primary"  @click="login"> 登录系统</el-button>
+                    </el-form-item>    
+                </el-form>
+                <span class="font-small font-thin color-gray">Copyright &copy; 2018 思亲堂 -- 技术支持：Vabora</span>
+            </el-card>
+        </el-col>
+    </el-row>
+</div>

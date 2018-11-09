@@ -1,0 +1,58 @@
+<div id="Role" class="height-full overflow-auto bg-dark radius-small padding">
+    <el-row :gutter="10">
+        <el-col :span="24-setWidth">
+            <el-card class="border-none">
+                <div slot="header">
+                    <span><i class="icon-user-group"></i> 角色权限列表</span>
+                    <el-button class="float-right margin-right" icon="icon-add-fill" size="mini" type="success" @click="reset();setWidth=8;"> 新增</el-button>
+                </div>
+                <el-table :stripe="true" :data="roleData" class="width-full">
+                    <el-table-column prop="id" label="编 号" width="60">
+                    </el-table-column>
+                    <el-table-column prop="name" label="角色名称">
+                    </el-table-column>
+                    <el-table-column prop="time" label="修改时间">
+                    </el-table-column>
+                    <el-table-column label="角色权限">
+                        <template slot-scope="scope">
+                            <el-button size="mini" icon="icon-safe" type="warning" @click=""></el-button>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="操作" width="190">
+                        <template slot-scope="scope">
+                            <el-button icon="icon-edit" size="mini" type="primary" @click="get(scope.row)"> 编辑</el-button>
+                            <el-button icon="icon-delete" size="mini" type="danger" @click="del(scope.row)"> 删除</el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </el-card>
+        </el-col>
+        <el-col :span="setWidth">
+            <el-card class="border-none">
+                <div slot="header">
+                    <span><i class="icon-user-info"></i> 角色信息管理</span>
+                </div>
+                <el-form :model="roleForm" :rules="rules" ref="roleForm">
+                    <el-form-item prop="name">
+                        <el-input type="text" class="border-none" placeholder="请输入角色名称" prefix-icon="icon-user" v-model="roleForm.name"></el-input>
+                    </el-form-item>
+                    <el-form-item prop="auth">
+                        <el-select multiple class="width-full border-none" placeholder="请选择操作权限" prefix-icon="icon-safe" v-model="roleForm.auth">
+                            <el-option v-for="key,value in auths" :key="value" :label="key" :value="value">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button class="margin-top-medium margin-bottom-medium" icon="icon-remove" type="warning"
+                            @click="reset"> 取消操作</el-button>
+                        <el-button v-if="!isupdate" class="margin-top-medium margin-bottom-medium" icon="icon-submit"
+                            type="primary" @click="add"> 添加角色</el-button>
+                        <el-button v-else class="margin-top-medium margin-bottom-medium" icon="icon-submit" type="primary"
+                            @click="set"> 修改角色</el-button>
+                    </el-form-item>
+                </el-form>
+            </el-card>
+        </el-col>
+    </el-row>
+
+</div>

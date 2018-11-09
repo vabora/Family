@@ -1,0 +1,40 @@
+const Safe = new Vue({
+    el:'#Safe',
+    data:{
+        setWidth:0,
+        roleData:[],
+        roleForm:{
+            name:'',
+            auth:''
+        },
+        rules:[],
+        isupdate:false,
+        auths:{
+            'user.add':'添加账户',
+            'user.set':'修改账户',
+            'user.del':'删除账户',
+            'user.get':'查看账户',
+            'book.add':'添加家谱',
+            'book.set':'修改家谱',
+            'book.del':'删除家谱',
+            'book.get':'查看家谱',
+            'family.add':'添加成员',
+            'family.set':'修改成员',
+            'family.del':'删除成员',
+            'family.get':'查看成员',
+        },
+    },
+    methods:{
+        getRoles:function(){},
+        getRole:function(){},
+        setRole:function(){
+            console.log(this.roleForm.auth)
+        },
+        resetForm:function(){
+            this.getRoles();
+            this.isupdate = false;
+            this.$refs['roleForm'].resetFields();
+            this.setWidth = 0;
+        }
+    }
+});

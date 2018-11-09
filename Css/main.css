@@ -1,0 +1,226 @@
+@charset "utf-8";
+@import url('animate.css');
+@import url('element-ui/element-ui.css');
+/*@import url('https://unpkg.com/element-ui/lib/theme-chalk/index.css');*/
+@import url('icon/icon.css');
+@import url('root.css');
+
+/* 定义字体图标 */
+/*
+[class*=" icon-"],[class^="icon-"] {
+    display: inline-block;
+    font: normal normal normal 0.16rem/1 iconfont;
+    text-rendering: auto;
+    vertical-align:baseline;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+*/
+#App{
+    /*position:fixed;*/
+    width:var(--full);
+    height:var(--full);
+}
+#Login{
+    align-items: center;
+    justify-content: center;
+}
+#Side{
+    width:var(--sideWidth);
+    height:var(--full);
+    float:left;
+    transition:all .5s ease;
+}
+#Side>#Logo{
+    width:var(--full);
+    height:var(--toolbarHeight);
+}
+#Side>#Menu{
+    width:var(--full);
+    height:calc(var(--full) - var(--toolbarHeight));
+}
+#Main{
+    width:calc(var(--full) - var(--sideWidth));
+    height:var(--full);
+    float:left;
+    transition:all .5s ease;
+}
+#Main>#Toolbar{
+    width:var(--full);
+    height:var(--toolbarHeight);
+}
+
+#Main>#Panel{
+    width:var(--full);
+    height:calc(var(--full) - var(--toolbarHeight));
+}
+#Main>#Panel .el-tab-pane{
+    height:calc(100vh - 1.25rem);
+}
+
+/* nav-menu style */
+.el-menu{
+    background-color:#1F2D3D;
+    color:rgba(230,230,230,.8);
+}
+.el-menu-item{
+    background-color:#1F2D3D;
+    color:rgba(230,230,230,.8);
+}
+.el-menu-item:hover{
+    background-color:rgb(25, 40, 55);
+    color:#6fe2d7;
+}
+.el-menu-item:focus,.el-menu-item.is-active{
+    background-color:rgb(15, 23, 34);
+    color:#009688;
+}
+.el-submenu__title{
+    color:rgba(230,230,230,.8);
+}
+.el-submenu__title:focus,.el-submenu__title:hover {
+	outline:0;
+	background-color:#1F2D3D;
+}
+.el-menu--collapse>.el-menu-item [class*="icon-"],.el-menu--collapse>.el-submenu>.el-submenu__title [class*="icon-"] {
+	margin: 0;
+	vertical-align: middle;
+	width: 0.24rem;
+	text-align: center
+}
+.el-menu-item [class*="icon-"] {
+	margin-right: 0.05rem;
+	width: 0.24rem;
+	text-align: center;
+	font-size: 0.18rem;
+	vertical-align: middle
+}
+.el-submenu [class*="icon-"] {
+	vertical-align: middle;
+	margin-right: 0.05rem;
+	width: 0.24rem;
+	text-align: center;
+	font-size: 0.18rem;
+}
+#tab-home .el-icon-close{
+    display:none;
+}
+/*header-search style*/
+.header-search{
+    box-sizing:border-box;
+    border:1px solid rgba(150,150,150,.3);
+    border-radius:25px;
+    padding:2px;
+}
+.header-search *{
+    border-width:0;
+}
+.header-search .el-input-group__prepend {
+    background-color: #fff;
+    min-width:100px;
+    border-radius:25px 0 0 25px;
+    border-right:1px solid rgba(150,150,150,.3);
+}
+.header-search .el-input-group__append{
+    border-radius:25px;
+}
+
+/* Family Tree Css Style*/
+#FamilyTree ul {
+    padding-top: 20px; 
+    position: relative;
+    overflow:auto;
+    transition: all 0.5s;
+    -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
+}
+
+#FamilyTree li {
+    float: left; 
+    text-align: center;
+    list-style-type: none;
+    position: relative;
+    padding: 20px 5px 0 5px;
+    transition: all 0.5s;
+    -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
+}
+
+/*We will use ::before and ::after to draw the connectors*/
+
+#FamilyTree li::before, #FamilyTree li::after{
+    content: '';
+    position: absolute; 
+    top: 0; right: 50%;
+    border-top: 1px solid #ccc;
+    width: 50%; height: 20px;
+}
+#FamilyTree li::after{
+    right: auto; 
+    left: 50%;
+    border-left: 1px solid #ccc;
+}
+
+/*We need to remove left-right connectors from elements without 
+any siblings*/
+#FamilyTree li:only-child::after, #FamilyTree li:only-child::before {
+    display: none;
+}
+
+/*Remove space from the top of single children*/
+#FamilyTree li:only-child{ padding-top: 0;}
+
+/*Remove left connector from first child and 
+right connector from last child*/
+#FamilyTree li:first-child::before, #FamilyTree li:last-child::after{
+    border: 0 none;
+}
+/*Adding back the vertical connector to the last nodes*/
+#FamilyTree li:last-child::before{
+    border-right: 1px solid #ccc;
+    border-radius: 0 5px 0 0;
+    -webkit-border-radius: 0 5px 0 0;
+    -moz-border-radius: 0 5px 0 0;
+}
+#FamilyTree li:first-child::after{
+    border-radius: 5px 0 0 0;
+    -webkit-border-radius: 5px 0 0 0;
+    -moz-border-radius: 5px 0 0 0;
+}
+
+/*Time to add downward connectors from parents*/
+#FamilyTree ul ul::before{
+    content: '';
+    position: absolute; top: 0; left: 50%;
+    border-left: 1px solid #ccc;
+    width: 0; height: 20px;
+}
+
+#FamilyTree li span{
+    border: 1px solid #ccc;
+    padding: 5px 10px;
+    text-decoration: none;
+    color: #666;
+    font-family: arial, verdana, tahoma;
+    font-size: 11px;
+    display: inline-block;
+    
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    
+    transition: all 0.5s;
+    -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
+}
+#FamilyTree li span>button{
+    border:none;
+    border-radius:.05rem;
+    margin:.05rem;
+}
+
+/*fix tree*/
+#Family .el-tree-node__content{
+    height:auto;
+}
+

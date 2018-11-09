@@ -1,0 +1,67 @@
+<div id="User" class="height-full overflow-auto bg-dark radius-small padding">
+    <el-row :gutter="10">
+        <el-col :span="24-setWidth">
+            <el-card class="border-none">
+                <div slot="header">
+                <span><i class="icon-user-group"></i> 账户信息列表</span>
+                <el-button class="float-right margin-right" icon="icon-add-fill" size="mini" type="success" @click="reset();setWidth=8;"> 新增</el-button>
+                </div>
+                <el-table :stripe="true" :data="userData" class="width-full">
+                        <el-table-column prop="id" label="编 号" width="60">
+                        </el-table-column>
+                        <el-table-column prop="name" label="账 号">
+                        </el-table-column>
+                        <el-table-column prop="email" label="邮 箱">
+                        </el-table-column>
+                        <el-table-column prop="phone" label="电 话">
+                        </el-table-column>
+                        <el-table-column label="操作" width="190">
+                            <template slot-scope="scope">
+                                <el-button icon="icon-edit" size="mini" type="primary" @click="get(scope.row)"> 编辑</el-button>
+                                <el-button icon="icon-delete" size="mini" type="danger" @click="del(scope.row)"> 删除</el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+            </el-card>
+        </el-col>
+        <el-col :span="setWidth">
+            <el-card class="border-none">
+                <div slot="header">
+                    <span><i class="icon-user-info"></i> 账户信息管理</span>
+                </div>
+                <el-form :model="userForm" :rules="rules" ref="userForm">
+                    <el-form-item prop="name">
+                        <el-input type="text" class="border-none" placeholder="请输入用户名" prefix-icon="icon-user" v-model="userForm.name"></el-input>
+                    </el-form-item>
+                    <el-form-item prop="password">
+                        <el-input type="password" class="border-none" placeholder="请输入密码" prefix-icon="icon-lock" v-model="userForm.password"></el-input>
+                    </el-form-item>
+                    <el-form-item prop="email">
+                        <el-input type="text" class="border-none" placeholder="请输入邮箱" prefix-icon="icon-email" v-model="userForm.email"></el-input>
+                    </el-form-item>
+                    <el-form-item prop="phone">
+                        <el-input type="text" class="border-none" placeholder="请输入手机号" prefix-icon="icon-phone" v-model="userForm.phone"></el-input>
+                    </el-form-item>
+                    <el-form-item prop="family">
+                        <el-select class="border-none width-full" placeholder="请选择家谱" v-model="userForm.family">
+                            <el-option v-for="family in familys" :key="family.id" :label="family.name" :value="family.id">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item prop="role">
+                        <el-select class="border-none width-full" placeholder="请选择角色" v-model="userForm.role">
+                            <el-option v-for="role in roles" :key="role.id" :label="role.name" :value="role.id">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button class="margin-top-medium margin-bottom-medium" icon="icon-remove" type="warning" @click="reset"> 取消操作</el-button>
+                        <el-button v-if="!isupdate" class="margin-top-medium margin-bottom-medium" icon="icon-submit" type="primary" @click="add"> 添加账户</el-button>
+                        <el-button v-else class="margin-top-medium margin-bottom-medium" icon="icon-submit" type="primary" @click="set"> 修改账户</el-button>
+                    </el-form-item>
+                </el-form>
+            </el-card>
+
+        </el-col>
+    </el-row>
+</div>

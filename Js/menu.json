@@ -1,0 +1,26 @@
+{
+  "home": {
+    "title": "家族图谱",
+    "icon": "home"
+  },
+  "book": {
+    "title": "家谱列表",
+    "icon": "book"
+  },
+  "family": {
+    "title": "家族成员",
+    "icon": "user-list"
+  },
+  "user": {
+    "title": "会员账户",
+    "icon": "user"
+  },
+  "role": {
+    "title": "管理角色",
+    "icon": "user-info"
+  },
+  "safe": {
+    "title": "数据安全",
+    "icon": "database"
+  }
+}

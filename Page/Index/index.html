@@ -1,0 +1,87 @@
+<div id="App">
+    <div id="Side" class="bg-dark" :style="'--sideWidth:'+sideWidth">
+        <header id="Logo" class="bg-cyan text-center text-height-large color-white">
+            <i v-if="isCollapse" class="icon-frx"></i>
+            <i v-else class="icon-pc"> 思亲堂家谱系统 V2.0</i>
+        </header>
+        <nav id="Menu" class="bg-dark overflow-y-auto box-shadow-right-mini">
+            <el-menu :default-active="currentMenu" unique-opened :collapse="isCollapse" class="border-none">
+                <el-menu-item v-for="(menu,key,index) in nav" :index="index" @click="addPage(key,menu.title,menu.icon)">
+                    <i :class="'icon-'+menu.icon"></i>
+                    <span slot="title">{{menu.title}}</span>
+                </el-menu-item>
+            </el-menu>
+        </nav>
+    </div>
+    <div id="Main" :style="'--sideWidth:'+sideWidth">
+        <div id="Toolbar" class="bg-white box-shadow-bottom-mini">
+            <el-row class="height-full" type="flex" justify="space-around" align="middle">
+                <el-col :span="5">
+                    <el-button icon="icon-list" @click="changeNav" class="padding border-none"></el-button>
+                    <el-button icon="icon-refresh" class="padding border-none" @click="refresh"></el-button>
+                    <el-button v-if="isScreen==true" icon="icon-fullscreen" class="padding border-none" @click="fullScreen"></el-button>
+                    <el-button v-else icon="icon-resize" class="padding border-none" @click="resizeScreen"></el-button>
+                    <el-button icon="icon-info" class="padding border-none" @click="aboutDialogVisible = true"></el-button>
+                </el-col>
+                <el-col :span="14">
+                    <el-input size="mini" placeholder="请输入内容" v-model="search" class="header-search">
+                        <el-select v-model="kind" slot="prepend" placeholder="请选择">
+                            <el-option label="家谱名称" value="1"></el-option>
+                            <el-option label="人员名称" value="2"></el-option>
+                        </el-select>
+                        <el-button slot="append" icon="icon-search"></el-button>
+                    </el-input>
+                </el-col>
+                <el-col class="text-right" :span="3">
+                    <el-dropdown @command="doCommand">
+                        <div class="cursor-hand outline-none">
+                            <i class="icon-user"></i>
+                            <span class="font-small">Vabora [管理员]</span>
+                        </div>
+                        <el-dropdown-menu slot="dropdown">
+                            <el-dropdown-item command="repwd">
+                                <i class="icon-safe"></i> 修改密码</el-dropdown-item>
+                            <el-dropdown-item command="logout">
+                                <i class="icon-logout"></i> 注销登录</el-dropdown-item>
+                            <el-dropdown-item command="exit">
+                                <i class="icon-exit"></i> 退出系统</el-dropdown-item>
+                        </el-dropdown-menu>
+                    </el-dropdown>
+                </el-col>
+            </el-row>
+        </div>
+        <div id="Panel" class="padding">
+            <el-tabs v-model="page" type="card" closable @tab-remove="removePage" @tab-click="getMenu">
+                <el-tab-pane v-for="(page, index) in pages" :key="page.name" :name="page.name" :label="page.title">
+                    <span slot="label"><i :class="page.icon"></i> {{page.title}}</span>
+                    <iframe class="border-none screen-full" :src="'Page/?page='+page.url"></iframe>
+                </el-tab-pane>
+            </el-tabs>
+        </div>
+    </div>
+    <el-dialog title="修改密码" width="30%" :visible.sync="dialogFormVisible">
+        <el-form :model="pwdForm" :rules="rules" ref="pwdForm">
+            <el-form-item prop="opwd">
+                <el-input type="password" placeholder="请输入原始密码" v-model="pwdForm.opwd" prefix-icon="icon-code"></el-input>
+            </el-form-item>
+            <el-form-item prop="npwd">
+                <el-input type="password" placeholder="请输入新设密码" v-model="pwdForm.npwd" prefix-icon="icon-code"></el-input>
+            </el-form-item>
+            <el-form-item prop="rpwd">
+                <el-input type="password" placeholder="再次确认新密码" v-model="pwdForm.rpwd" prefix-icon="icon-code"></el-input>
+            </el-form-item>
+        </el-form>
+        <div slot="footer">
+            <el-button @click="dialogFormVisible = false">取消操作</el-button>
+            <el-button :disabled="canRepassword" type="primary" @click="setPassword">修改密码</el-button>
+        </div>
+    </el-dialog>
+    <el-dialog title="系统版本信息" :visible.sync="aboutDialogVisible" width="30%" center>
+        <p>思亲堂家谱系统V2.0</p>
+        <p>技术支持：vabora（王小平）</p>
+        <p>&copy;思亲堂 2018</p>
+        <span slot="footer" class="dialog-footer">
+            <el-button type="primary" @click="aboutDialogVisible = false">确 定</el-button>
+        </span>
+    </el-dialog>
+</div>
