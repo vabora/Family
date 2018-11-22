@@ -38,7 +38,7 @@ class Family extends Model{
     public function get(){
         $id = $this->request('id');
         $this->where = ['id'=>$id];
-        $this->response($this->_select());
+        $this->response($this->query());
     }
     //设置家谱成员信息
     public function set(){

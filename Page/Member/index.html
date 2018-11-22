@@ -4,22 +4,26 @@
             <el-card class="border-none">
                 <div slot="header">
                     <span><i class="icon-user-group"></i> 成员信息列表</span>
-                    <el-button class="float-right margin-right" icon="icon-add-fill" size="mini" type="success" @click="setWidth=10">
+                    <el-button class="float-right margin-right" icon="icon-add-fill" size="mini" type="success" @click="reset();setWidth=10">
                         新增成员</el-button>
                 </div>
-                <el-tree :data="memberData" node-key="id" default-expand-all :expand-on-click-node="false">
+                <el-tree :data="memberData" :props="props" node-key="id" default-expand-all :expand-on-click-node="false">
                     <span style="flex: 1;display: flex;align-items: center;justify-content: space-between;" slot-scope="{ node, data }">
                         <span>{{ node.label }}</span>
                         <span>
-                            <el-dropdown class="margin-mini" trigger="click">
-                                <el-button type="primary" icon="icon-user-setting" size="mini"> 操作选项 <i class="el-icon-arrow-down el-icon--right"></i></el-button>
+                            <!-- <el-button class="margin-mini" size="mini" icon="icon-user-add" round type="warning" @click="reset();setWidth=10;memberForm.path=data.path.concat(data.id);"> 子级</el-button>
+                            <el-button class="margin-mini" size="mini" icon="icon-user-group" round type="success" @click="reset();setWidth=10;memberForm.path=data.path.concat(data.id);"> 配偶</el-button>
+                            <el-button class="margin-mini" size="mini" icon="icon-edit" round type="primary" @click="get(data)"> 编辑</el-button>
+                            <el-button class="margin-mini" size="mini" icon="icon-delete" round type="danger" @click="del(data)"> 删除</el-button>                             -->
+                            <el-dropdown class="margin-mini" trigger="click" @command="cmdHandle">
+                                <el-button type="primary" icon="icon-user-setting" size="mini">操作 <i class="el-icon-arrow-down el-icon--right"></i></el-button>
                                 <el-dropdown-menu slot="dropdown">
-                                  <el-dropdown-item><i class="icon-user-add"></i> 添加子级</el-dropdown-item>
-                                  <el-dropdown-item><i class="icon-user-group"></i> 添加配偶</el-dropdown-item>
-                                  <el-dropdown-item><i class="icon-edit"></i> 编辑信息</el-dropdown-item>
-                                  <el-dropdown-item><i class="icon-delete"></i> 删除信息</el-dropdown-item>
+                                    <el-dropdown-item :command="{cmd:child,data:data}"><i class="icon-user-add"></i> 添加子级</el-dropdown-item>
+                                    <el-dropdown-item :command="{cmd:spouse,data:data}"><i class="icon-user-group"></i> 添加配偶</el-dropdown-item>
+                                    <el-dropdown-item :command="{cmd:get,data:data}"><i class="icon-edit"></i> 编辑信息</el-dropdown-item>
+                                    <el-dropdown-item :command="{cmd:del,data:data}"><i class="icon-delete"></i> 删除信息</el-dropdown-item>
                                 </el-dropdown-menu>
-                              </el-dropdown>
+                            </el-dropdown>
                         </span>
                     </span>
                 </el-tree>
@@ -32,25 +36,51 @@
                     <span><i class="icon-user-info"></i> 成员信息管理</span>
                 </div>
                 <el-form :model="memberForm" :rules="rules" ref="memberForm">
+                    <el-form-item prop="path">
+                        <el-cascader change-on-select placeholder="请选择父级" class="width-full" :props="props" :options="memberData" v-model="memberForm.path" @change="setParent">
+                        </el-cascader>
+                    </el-form-item>
                     <el-form-item prop="name">
-                        <el-input type="text" class="border-none" placeholder="请输入家谱名称" prefix-icon="icon-user" v-model="memberForm.name"></el-input>
+                        <el-input type="text" class="border-none" placeholder="请输入成员名称" prefix-icon="icon-user" v-model="memberForm.name"></el-input>
+                    </el-form-item>
+                    <el-form-item prop="age">
+                        <el-input type="text" class="border-none" placeholder="请输入成员年龄" prefix-icon="icon-user-info" v-model="memberForm.age"></el-input>                        
+                    </el-form-item>
+                    <el-form-item prop="sex">
+                        <el-select class="width-full" v-model="memberForm.sex" placeholder="请选择成员性别">
+                            <el-option :key="0" label="男" value="0"></el-option>
+                            <el-option :key="1" label="女" value="1"></el-option>
+                        </el-select>
+                        
+                    </el-form-item>
+                    <el-form-item prop="birthday">
+                        <el-date-picker style="width:100%;" v-model="memberForm.birthday" type="date" format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd" placeholder="选择日期时间">
+                        </el-date-picker>
                     </el-form-item>
                     <el-form-item prop="image">
-                        <el-input type="text" readonly class="border-none" placeholder="请上传封面图片" prefix-icon="icon-image"
-                            v-model="memberForm.image">
+                        <el-input type="text" readonly class="border-none" placeholder="请上传封面图片" prefix-icon="icon-image" v-model="memberForm.image">
                             <div slot="append">
-                                <el-upload action="https://jsonplaceholder.typicode.com/posts/">
+                                    <el-upload 
+                                    name="memberImage"
+                                    action="/Server/?module=Member&action=upload"
+                                    :show-file-list="false"
+                                    :on-change="uploading"
+                                    >
                                     <el-button icon="icon-image"> 封面</el-button>
-                                </el-upload>
+                                  </el-upload>
                             </div>
-
-                        </el-input>
+                        </el-input> 
+                    </el-form-item>
+                    <el-form-item prop="description">
+                        <el-input type="textarea" v-model="memberForm.description" placeholder="请输入成员简介"></el-input>
                     </el-form-item>
                     <el-form-item>
                         <el-button class="margin-top-medium margin-bottom-medium" icon="icon-remove" type="warning"
-                            @click="resetForm"> 取消操作</el-button>
-                        <el-button class="margin-top-medium margin-bottom-medium" icon="icon-submit" type="primary"
-                            @click="setBook"> 执行操作</el-button>
+                            @click="reset"> 取消操作</el-button>
+                        <el-button v-if="!isupdate" class="margin-top-medium margin-bottom-medium" icon="icon-submit"
+                            type="primary" @click="add"> 添加成员</el-button>
+                        <el-button v-else class="margin-top-medium margin-bottom-medium" icon="icon-submit" type="primary"
+                            @click="set"> 修改成员</el-button>
                     </el-form-item>
                 </el-form>
             </el-card>

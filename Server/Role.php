@@ -46,7 +46,7 @@ class Role extends Model{
     public function get(){
         $id = $this->request('id');
         $this->where = ['id'=>$id];
-        $this->response($this->_select());
+        $this->response($this->query());
     }
     //修改角色数据
     public function set(){

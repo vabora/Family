@@ -223,4 +223,7 @@ right connector from last child*/
 #Member .el-tree-node__content{
     height:auto;
 }
+#Member .el-radio__inner{
+    box-shadow: none;
+}
 

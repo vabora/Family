@@ -6,7 +6,7 @@ class Member extends Model{
     public function __construct(){
         parent::__construct();
         $this->table = 'Member';
-        $this->fields = ['parent','name','age','sex','birthday','image','description'];
+        $this->fields = ['family','parent','path','name','age','sex','birthday','image','description','time'];
     }
     //返回成员树形列表
     private function tree(array $list){
@@ -23,13 +23,23 @@ class Member extends Model{
     }
     //获取成员列表
     public function list(){
-        $this->response($this->tree($this->records()));
+        $list = $this->records();
+        if(count($list)<1){
+            $list = [['id'=>0,'parent'=>0,'path'=>'0','name'=>'始祖']];
+        }
+        foreach($list as $key=>$value){
+            $list[$key]['path'] = explode(',',$list[$key]['path']);
+        }
+        $this->response($this->tree($list));
     }
     //新增成员信息
     public function add(){
         $data = $this->request('data');
+        $data['family'] = $_SESSION['user']['family'];
         $data['time'] = date('Y-m-d h:i:s');
+        $data['path'] = implode(',',$data['path']);
         $this->data = $data;
+        //die(json_encode($this->data));
         if($this->append()>0){
             $this->response(['state'=>1,'message'=>'成员数据添加成功！']);
         }
@@ -40,12 +50,18 @@ class Member extends Model{
     //删除成员信息
     public function del(){
         $id = $this->request('id');
-        $this->where = ['id'=>$id];
-        if($this->remove()>0){
-            $this->response(['state'=>1,'message'=>'成员数据删除成功！']);
+        $this->where = ['parent'=>$id];
+        if(count($this->query())>0){
+            $this->response(['state'=>0,'message'=>'当前成员下含有子类，删除失败！']);
         }
         else{
-            $this->response(['state'=>0,'message'=>'成员数据删除失败！']);
+            $this->where = ['id'=>$id];
+            if($this->remove()>0){
+                $this->response(['state'=>1,'message'=>'成员数据删除成功！']);
+            }
+            else{
+                $this->response(['state'=>0,'message'=>'成员数据删除失败！']);
+            }
         }
     }
     //获取成员信息
@@ -58,7 +74,9 @@ class Member extends Model{
     public function set(){
         $data = $this->request('data');
         $this->where = ['id'=>$data['id']];
+        $data['path'] = implode(',',$data['path']);
         $this->data = $data;
+        //die(json_encode($data));
         if($this->update()){
             $this->response(['state'=>1,'message'=>'成员数据更新成功！']);
         }

@@ -43,7 +43,7 @@ class User extends Model{
     public function get(){
         $id = $this->request('id');
         $this->where = ['id'=>$id];
-        $this->response($this->_select());
+        $this->response($this->query());
     }
     //更新用户
     public function set(){
