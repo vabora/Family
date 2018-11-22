@@ -1,58 +1,49 @@
 <div id="Safe" class="height-full overflow-auto bg-dark radius-small padding">
-        <el-row :gutter="10">
-                <el-col :span="24-setWidth">
-                    <el-card class="border-none">
-                        <div slot="header">
-                            <span><i class="icon-user-group"></i> 角色权限列表</span>
-                            <el-button class="float-right margin-right" icon="icon-add-fill" size="mini" type="success" @click="setWidth=8"> 新增</el-button>
-                        </div>
-                        <el-table :stripe="true" :data="roleData" class="width-full">
-                            <el-table-column prop="id" label="编 号" width="60">
-                            </el-table-column>
-                            <el-table-column prop="name" label="角色名称">
-                            </el-table-column>
-                            <el-table-column prop="email" label="创建时间">
-                                <template slot-scope="scope">
-                                    <el-button icon="icon-safe" type="warning" @click=""></el-button>
-                                </template>
-                            </el-table-column>
-                            <el-table-column label="操作" width="190">
-                                <template slot-scope="scope">
-                                    <el-button icon="icon-edit" size="mini" type="primary" @click="getRole(scope.row)"> 编辑</el-button>
-                                    <el-button icon="icon-delete" size="mini" type="danger" @click="delRole(scope.row)"> 删除</el-button>
-                                </template>
-                            </el-table-column>
-                        </el-table>
-                    </el-card>
-                </el-col>
-                <el-col :span="setWidth">
-                    <el-card class="border-none">
-                        <div slot="header">
-                            <span><i class="icon-user-info"></i> 账户信息管理</span>
-                        </div>
-                        <el-form :model="roleForm" :rules="rules" ref="roleForm">
-                            <el-form-item prop="name">
-                                <el-input type="text" class="border-none" placeholder="请输入角色名称" prefix-icon="icon-user" v-model="roleForm.name"></el-input>
-                            </el-form-item>
-                            <el-form-item prop="name">
-                                <el-select multiple class="width-full border-none" placeholder="请选择操作权限" prefix-icon="icon-safe" v-model="roleForm.auth">
-                                    <el-option
-                                        v-for="key,value in auths"
-                                        :key="value"
-                                        :label="key"
-                                        :value="value">
-                                    </el-option>
-                                </el-select>
-                            </el-form-item>
-                            <el-form-item>
-                                <el-button class="margin-top-medium margin-bottom-medium" icon="icon-remove" type="warning"
-                                    @click="resetForm"> 取消操作</el-button>
-                                <el-button class="margin-top-medium margin-bottom-medium" icon="icon-submit" type="primary"
-                                    @click="setRole"> 执行操作</el-button>
-                            </el-form-item>
-                        </el-form>
-                    </el-card>
-                </el-col>
-            </el-row>
-    
+    <el-row :gutter="10">
+        <el-col :span="24-setWidth">
+            <el-card class="border-none">
+                <div slot="header">
+                    <span><i class="icon-database"></i> 数据表列表</span>
+                    <el-button class="float-right margin-right" icon="icon-add-fill" size="mini" type="success" @click="add()">
+                        新增备份 </el-button>
+                </div>
+                <el-table :stripe="true" :data="fileData" class="width-full">
+                    <el-table-column prop="name" label="文件名称">
+                    </el-table-column>
+                    <el-table-column prop="size" label="文件大小" width="100">
+                    </el-table-column>
+                    <el-table-column prop="time" label="创建时间" width="160">
+                    </el-table-column>
+                    <el-table-column label="操作" width="190">
+                        <template slot-scope="scope">
+                            <el-button icon="icon-view" size="mini" type="primary" @click="get(scope.row)"> 查看</el-button>
+                            <el-button icon="icon-delete" size="mini" type="danger" @click="del(scope.row.name)"> 删除</el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </el-card>
+        </el-col>
+        <el-col :span="setWidth">
+            <el-card class="border-none">
+                <div slot="header">
+                    <span><i class="icon-data"></i> 备份信息管理</span>
+                </div>
+                <el-form :model="fileForm" :rules="rules" ref="fileForm">
+                    <el-form-item prop="name">
+                        <el-input type="text" readonly class="border-none" placeholder="请输入备份文件名称" prefix-icon="icon-note" v-model="fileForm.name"></el-input>
+                    </el-form-item>
+                    <el-form-item prop="content">
+                        <el-input type="textarea" readonly class="border-none" :autosize="{ minRows:2, maxRows:12}" placeholder="请输入备份文件内容" v-model="fileForm.content"></el-input>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button class="margin-top-medium margin-bottom-medium" icon="icon-remove" type="warning"
+                            @click="reset"> 取消操作</el-button>
+                        <el-button class="margin-top-medium margin-bottom-medium" icon="icon-refresh" type="danger"
+                            @click="set"> 还原数据</el-button>
+                    </el-form-item>
+                </el-form>
+            </el-card>
+        </el-col>
+    </el-row>
+
 </div>

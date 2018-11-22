@@ -14,6 +14,8 @@ define('ROOT_PATH',str_replace('Server/','',realpath('./').DIRECTORY_SEPARATOR))
 define('CORE_PATH',ROOT_PATH.'Core/');
 //定义应用目录
 define('SERVER_PATH',ROOT_PATH.'Server/');
+//定义数据目录
+define('DATA_PATH',ROOT_PATH.'Data/');
 
 //加载应用启动文件
 require_once(CORE_PATH.'/App.php');

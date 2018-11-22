@@ -1,7 +1,6 @@
 <?php
 namespace Server;
-use Core\Library\Model;
-use Core\Library\Upload;
+use Core\Library\{Model,Upload};
 class Book extends Model{
     //构造函数
     public function __construct(){
@@ -11,14 +10,14 @@ class Book extends Model{
     }
     //获取家谱列表
     public function list(){
-        $this->response($this->_list());
+        $this->response($this->records());
     }
     //添加家谱信息
     public function add(){
         $data = $this->request('data');
         $data['time'] = date('Y-m-d h:i:s');
         $this->data = $data;
-        if($this->_insert()>0){
+        if($this->append()>0){
             $this->response(['state'=>1,'message'=>'家谱添加成功']);
         }
         else{
@@ -29,7 +28,7 @@ class Book extends Model{
     public function del(){
         $id = $this->request('id');
         $this->where = ['id'=>$id];
-        if($this->_delete()>0){
+        if($this->remove()>0){
             $this->response(['state'=>1,'message'=>'家谱删除成功']);
         }
         else{
@@ -40,14 +39,14 @@ class Book extends Model{
     public function get(){
         $id = $this->request('id');
         $this->where = ['id'=>$id];
-        $this->response($this->_query());
+        $this->response($this->_select());
     }
     //设置家谱信息
     public function set(){
         $data = $this->request('data');
         $this->where = ['id'=>$data['id']];
         $this->data = $data;
-        if($this->_update()){
+        if($this->update()){
             $this->response(['state'=>1,'message'=>'家谱修改成功']);
         }
         else{

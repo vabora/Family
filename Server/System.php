@@ -5,7 +5,7 @@ class System extends Model{
     //构造函数
     public function __construct(){
         parent::__construct();
-        $this->table = 'user';
+        $this->table = 'User';
     }
     //用户登录验证
     public function login(){
@@ -15,7 +15,7 @@ class System extends Model{
             return false;
         }
         $this->where = ['name'=>$data['uid'],'password'=>$data['pwd']];
-        $user = $this->_query();
+        $user = $this->query();
         if(count($user)>0){
             $_SESSION['user'] = $user[0];
             $this->response(['state'=>1,'message'=>'登录成功，正在进入系统...']);
@@ -45,7 +45,7 @@ class System extends Model{
         else{
             $this->data = ['password'=>$data['npwd']];
             $this->where = ['id'=>$_SESSION['user']['id']];
-            if($this->_update()>0){
+            if($this->update()>0){
                 $_SESSION['user'] = null;
                 session_destroy();
                 $this->response(['state'=>1,'message'=>'密码修改成功，即将重新登录...']);

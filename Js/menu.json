@@ -7,7 +7,7 @@
     "title": "家谱列表",
     "icon": "book"
   },
-  "family": {
+  "member": {
     "title": "家族成员",
     "icon": "user-list"
   },

@@ -220,7 +220,7 @@ right connector from last child*/
 }
 
 /*fix tree*/
-#Family .el-tree-node__content{
+#Member .el-tree-node__content{
     height:auto;
 }
 

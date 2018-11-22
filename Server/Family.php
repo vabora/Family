@@ -10,13 +10,13 @@ class Family extends Model{
     }
     //获取家谱成员列表
     public function list(){
-        $this->response($this->_list());
+        $this->response($this->records());
     }
     //添加家谱成员信息
     public function add(){
         $data = $this->request('data');
         $this->data = $data;
-        if($this->_insert()>0){
+        if($this->append()>0){
             $this->response(['state'=>1,'message'=>'家谱成员信息添加成功']);
         }
         else{
@@ -27,7 +27,7 @@ class Family extends Model{
     public function del(){
         $id = $this->request('id');
         $this->where = ['id'=>$id];
-        if($this->_delete()>0){
+        if($this->remove()>0){
             $this->response(['state'=>1,'message'=>'家谱成员信息删除成功']);
         }
         else{
@@ -38,13 +38,13 @@ class Family extends Model{
     public function get(){
         $id = $this->request('id');
         $this->where = ['id'=>$id];
-        $this->response($this->_query());
+        $this->response($this->_select());
     }
     //设置家谱成员信息
     public function set(){
         $data = $this->request('data');
         $this->where = ['id'=>$data['id']];
-        if($this->_update()>0){
+        if($this->update()>0){
             $this->response(['state'=>1,'message'=>'家谱成员更新成功']);
         }
         else{
